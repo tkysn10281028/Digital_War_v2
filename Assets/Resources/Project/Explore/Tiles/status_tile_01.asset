@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: status_tile_01
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 3959026220365495637, guid: 523ea6431b8684013823ac55be085f6c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_Transform:
     e00: 1
     e01: 0
