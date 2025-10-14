@@ -6,13 +6,13 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
     public class PlayerTilemapObstacleHandler : MonoBehaviour, IPlayerObstacleHandler
     {
         [SerializeField] private Tilemap _tilemap;
-        [SerializeField] private MonoBehaviour _obstacleProcessHandlerComponent;
+        [SerializeField] private MonoBehaviour _obstacleProcessorComponent;
         private int[,] mapData;
-        private ObstacleProcessHandler processor;
+        private ObstacleProcessor processor;
 
         void Awake()
         {
-            processor = _obstacleProcessHandlerComponent as ObstacleProcessHandler;
+            processor = _obstacleProcessorComponent as ObstacleProcessor;
         }
 
         public void Init(int[,] mapData)

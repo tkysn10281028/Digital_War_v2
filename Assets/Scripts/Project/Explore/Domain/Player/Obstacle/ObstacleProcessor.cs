@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
 {
-    public class ObstacleProcessHandler : MonoBehaviour
+    public class ObstacleProcessor : MonoBehaviour
     {
         public Vector3 ProcessAndReturnPosition(Vector3 origin, Vector3 target, int cellValue)
         {
