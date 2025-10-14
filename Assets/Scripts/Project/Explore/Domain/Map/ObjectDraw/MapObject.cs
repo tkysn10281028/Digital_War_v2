@@ -1,4 +1,5 @@
 using DigitalWar.Project.Common.Enums;
+using DigitalWar.Project.Common.Manager;
 
 namespace DigitalWar.Project.Explore.Domain.Map.ObjectDraw
 {
@@ -12,8 +13,8 @@ namespace DigitalWar.Project.Explore.Domain.Map.ObjectDraw
 
         public MapObject(int x, int y, int color, Objects type, bool isXDirection = false)
         {
-            X = x;
-            Y = y;
+            X = GameManager.Instance.PlayerCurrentPosition.X + x;
+            Y = GameManager.Instance.PlayerCurrentPosition.Y + y;
             Color = color;
             Type = type;
             IsXDirection = isXDirection;

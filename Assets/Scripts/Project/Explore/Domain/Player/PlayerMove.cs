@@ -21,6 +21,7 @@ namespace DigitalWar.Project.Explore.Domain.Player
             inputHandler = _inputHandlerComponent as IPlayerMoveInputHandler;
             obstacleHandler = _obstacleHandlerComponent as IPlayerObstacleHandler;
             playerRotator = _playerRotatorComponent as PlayerRotator;
+            GameManager.Instance.PlayerCurrentPosition.SetPlayerPosition(-1, -1);
         }
 
         void Start()
@@ -35,7 +36,7 @@ namespace DigitalWar.Project.Explore.Domain.Player
                     if (moveDirection == Vector3.zero)
                         return;
 
-                    var target = origin + moveDirection * _moveSpeed * Time.deltaTime;
+                    var target = origin + _moveSpeed * Time.deltaTime * moveDirection;
                     var nextPosition = obstacleHandler.JudgeIsObstacle(origin, target);
 
                     if (nextPosition != origin)

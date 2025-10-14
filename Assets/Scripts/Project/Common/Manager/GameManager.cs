@@ -1,4 +1,5 @@
 using DigitalWar.Project.Common.Objects.Explore;
+using DigitalWar.Project.Explore.Domain.Player;
 using UnityEngine;
 namespace DigitalWar.Project.Common.Manager
 {
@@ -6,6 +7,7 @@ namespace DigitalWar.Project.Common.Manager
     {
         public static GameManager Instance;
         public ExploreObject ExploreObject = new();
+        public PlayerCurrentPosition PlayerCurrentPosition = new();
         public bool IsPlayerLocked { get; private set; }
 
         void Awake()
