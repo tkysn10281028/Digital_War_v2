@@ -1,6 +1,6 @@
 using DigitalWar.Project.Common.Enums;
 
-namespace DigitalWar.Project.Explore.Domain.Status
+namespace DigitalWar.Project.Explore.Domain.Status.ObjectDraw
 {
     public class StatusObject
     {

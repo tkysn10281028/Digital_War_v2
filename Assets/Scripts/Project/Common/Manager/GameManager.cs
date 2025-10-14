@@ -1,5 +1,3 @@
-
-using System.Collections.Generic;
 using DigitalWar.Project.Common.Objects.Explore;
 using UnityEngine;
 namespace DigitalWar.Project.Common.Manager

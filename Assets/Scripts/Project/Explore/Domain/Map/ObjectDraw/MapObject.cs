@@ -1,6 +1,6 @@
 using DigitalWar.Project.Common.Enums;
 
-namespace DigitalWar.Project.Explore.Domain.Map
+namespace DigitalWar.Project.Explore.Domain.Map.ObjectDraw
 {
     public class MapObject
     {

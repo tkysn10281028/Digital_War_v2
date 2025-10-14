@@ -1,7 +1,7 @@
 using DigitalWar.Project.Common.Enums;
 using UnityEngine.SceneManagement;
 
-namespace DigitalWar.Project.Common
+namespace DigitalWar.Project.Common.Scene
 {
     public static class SceneLoader
     {
