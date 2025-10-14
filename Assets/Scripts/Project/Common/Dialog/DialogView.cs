@@ -82,7 +82,6 @@ namespace DigitalWar.Project.Common.Dialog
                 txt.fontSize = 28;
                 txt.color = (i == 0) ? Color.yellow : Color.white;
                 txt.alignment = TextAlignmentOptions.Center;
-                Debug.Log(TextArea.font);
                 txt.font = TextArea.font;
                 var rect = txt.GetComponent<RectTransform>();
                 rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);

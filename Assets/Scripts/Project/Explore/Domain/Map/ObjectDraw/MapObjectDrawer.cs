@@ -10,7 +10,6 @@ namespace DigitalWar.Project.Explore.Domain.Map.ObjectDraw
     public class MapObjectDrawer : MonoBehaviour
     {
         [SerializeField] private Tilemap _tilemap;
-        [SerializeField] private TileBase _mapTile;
         [SerializeField] private TileBase _mapTileYellow;
         [SerializeField] private TileBase _mapTileGreen;
         [SerializeField] private GameObject _playerYellow;
