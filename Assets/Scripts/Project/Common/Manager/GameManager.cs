@@ -7,7 +7,7 @@ namespace DigitalWar.Project.Common.Manager
     {
         public static GameManager Instance;
         public ExploreObject ExploreObject = new();
-        public PlayerCurrentPosition PlayerCurrentPosition = new();
+        public PlayerCurrentState PlayerCurrentState = new();
         public bool IsPlayerLocked { get; private set; }
 
         void Awake()

@@ -30,7 +30,8 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             int y = -(cellPos.y - (rows / 2 - 1));
             if (x < 0 || x >= cols || y < 0 || y >= rows) return origin;
             int cellValue = mapData[y, x];
-            return processor.ProcessAndReturnPosition(origin, target, (TileTypes)cellValue);
+            var result = processor.ProcessAndReturnPosition(origin, target, (TileTypes)cellValue);
+            return result;
         }
     }
 }

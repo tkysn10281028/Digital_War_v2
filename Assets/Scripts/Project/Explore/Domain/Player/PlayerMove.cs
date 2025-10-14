@@ -4,6 +4,7 @@ using UniRx.Triggers;
 using DigitalWar.Project.Common.Manager;
 using DigitalWar.Project.Explore.Domain.Player.Rotate;
 using DigitalWar.Project.Explore.Domain.Player.IF;
+using DigitalWar.Project.Common.Enums;
 namespace DigitalWar.Project.Explore.Domain.Player
 {
     public class PlayerMove : MonoBehaviour
@@ -21,7 +22,7 @@ namespace DigitalWar.Project.Explore.Domain.Player
             inputHandler = _inputHandlerComponent as IPlayerMoveInputHandler;
             obstacleHandler = _obstacleHandlerComponent as IPlayerObstacleHandler;
             playerRotator = _playerRotatorComponent as PlayerRotator;
-            GameManager.Instance.PlayerCurrentPosition.SetPlayerPosition(-1, -1);
+            GameManager.Instance.PlayerCurrentState = new PlayerCurrentState(-1, -1, PlayerColors.Yellow);
         }
 
         void Start()

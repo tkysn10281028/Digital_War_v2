@@ -6,6 +6,7 @@ namespace DigitalWar.Project.Common.Enums
         Lock,
         Virus,
         Resist,
-        Ownership
+        Ownership,
+        None
     }
 }
