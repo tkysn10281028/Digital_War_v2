@@ -1,3 +1,4 @@
+using DigitalWar.Project.Explore.Domain.Player.IF;
 using UnityEngine;
 namespace DigitalWar.Project.Explore.Domain.Player.GameInput
 {

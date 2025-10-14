@@ -5,10 +5,11 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
 {
     public class PlayerTilemapObstacleHandler : MonoBehaviour, IPlayerObstacleHandler
     {
-        [SerializeField] private Tilemap tilemap;
-        private int[,] mapData;
+        [SerializeField] private Tilemap _tilemap;
         [SerializeField] private MonoBehaviour _obstacleProcessHandlerComponent;
+        private int[,] mapData;
         private ObstacleProcessHandler processor;
+
         void Awake()
         {
             processor = _obstacleProcessHandlerComponent as ObstacleProcessHandler;
@@ -21,7 +22,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
 
         public Vector3 JudgeIsObstacle(Vector3 origin, Vector3 target)
         {
-            Vector3Int cellPos = tilemap.WorldToCell(target);
+            Vector3Int cellPos = _tilemap.WorldToCell(target);
             int cols = mapData.GetLength(1);
             int rows = mapData.GetLength(0);
             int x = cellPos.x + cols / 2;

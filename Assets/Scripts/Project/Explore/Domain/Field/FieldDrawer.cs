@@ -7,14 +7,20 @@ namespace DigitalWar.Project.Explore.Domain.Field
     {
         [SerializeField] private MonoBehaviour _drawFieldHandlerComponent;
         private IFieldDrawHandler drawFieldHandler;
+
         void Awake()
         {
             drawFieldHandler = _drawFieldHandlerComponent as IFieldDrawHandler;
         }
+
         void Start()
         {
-            drawFieldHandler.Draw();
+            drawFieldHandler.Draw("map.csv");
+        }
+
+        public void RedrawField(string fileName)
+        {
+            drawFieldHandler.Draw(fileName);
         }
     }
-
 }

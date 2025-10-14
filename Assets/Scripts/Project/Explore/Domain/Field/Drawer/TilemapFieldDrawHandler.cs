@@ -9,26 +9,26 @@ namespace DigitalWar.Project.Explore.Domain.Field.Drawer
     {
         [SerializeField] private Tilemap _tilemap;
         [SerializeField] private MonoBehaviour _obstacleHandlerComponent;
-        private PlayerTilemapObstacleHandler obstacleHandler;
         [SerializeField] private MonoBehaviour _tileSetHandlerComponent;
-        private TileSetHandler tileSetHandler;
         private int[,] mapData;
+        private PlayerTilemapObstacleHandler obstacleHandler;
+        private TileSetHandler tileSetHandler;
+
         void Awake()
         {
             tileSetHandler = _tileSetHandlerComponent as TileSetHandler;
             obstacleHandler = _obstacleHandlerComponent as PlayerTilemapObstacleHandler;
         }
-        public void Draw()
+
+        public void Draw(string fileName)
         {
-            // TODO:ここでリモートからファイル名の指示を受けて読み込みを行う
-            LoadFieldFromCSV("map.csv");
+            LoadFieldFromCSV(fileName);
             DrawField();
             obstacleHandler.Init(mapData);
         }
 
         private void LoadFieldFromCSV(string fileName)
         {
-            // TODO:ここはS3のパスに置き換える。もしくはBootScene上でファイルを全てS3からダウンロードするなら変更なし
             string path = Path.Combine(Application.streamingAssetsPath, fileName);
             if (!File.Exists(path))
             {
@@ -56,6 +56,7 @@ namespace DigitalWar.Project.Explore.Domain.Field.Drawer
                 }
             }
         }
+
         private void DrawField()
         {
             int rows = mapData.GetLength(0);

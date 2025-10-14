@@ -20,6 +20,7 @@ namespace DigitalWar.Project.Common.Manager
                 Destroy(gameObject);
             }
         }
+
         public void LockPlayer()
         {
             IsPlayerLocked = true;
