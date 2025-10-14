@@ -1,4 +1,9 @@
+using System.Linq;
 using DigitalWar.Project.Common.Dialog;
+using DigitalWar.Project.Common.Enums;
+using DigitalWar.Project.Common.Manager;
+using DigitalWar.Project.Explore.Domain.Status;
+using DigitalWar.Project.Explore.Domain.Status.ObjectDraw;
 using UnityEngine;
 
 namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
@@ -23,13 +28,13 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                                     Debug.Log("通過");
                                     break;
                                 case 1:
-                                    Debug.Log("鍵");
+                                    RemoveAndRedrawStatus(Objects.Lock);
                                     break;
                                 case 2:
-                                    Debug.Log("ウイルス");
+                                    RemoveAndRedrawStatus(Objects.Virus);
                                     break;
                                 case 3:
-                                    Debug.Log("抗体");
+                                    RemoveAndRedrawStatus(Objects.Resist);
                                     break;
                                 default:
                                     break;
@@ -43,6 +48,20 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                     return target;
                 default:
                     return target;
+            }
+        }
+        private void RemoveAndRedrawStatus(Objects type)
+        {
+            var list = GameManager.Instance.ExploreObject.StatusObjectList;
+            var target = list.FirstOrDefault(obj => obj.Type == type);
+            if (target != null)
+            {
+                list.Remove(target);
+            }
+            var drawer = FindFirstObjectByType<StatusObjectDrawer>();
+            if (drawer != null)
+            {
+                drawer.DrawStatusObject();
             }
         }
     }
