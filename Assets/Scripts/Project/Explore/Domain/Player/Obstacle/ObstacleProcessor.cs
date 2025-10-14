@@ -10,13 +10,13 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
 {
     public class ObstacleProcessor : MonoBehaviour
     {
-        public Vector3 ProcessAndReturnPosition(Vector3 origin, Vector3 target, int cellValue)
+        public Vector3 ProcessAndReturnPosition(Vector3 origin, Vector3 target, TileTypes cellValue)
         {
             switch (cellValue)
             {
-                case 1:
+                case TileTypes.Wall01:
                     return origin;
-                case 2:
+                case TileTypes.Wall02:
                     DialogSystem.ShowWithChoicesAsync(
                         "行動を選択してください:",
                         new[] { "通過", "鍵", "ウイルス", "抗体" },
@@ -42,14 +42,15 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                         }
                     );
                     return origin;
-                case 3:
+                case TileTypes.Wall03:
                     return origin;
-                case 0:
+                case TileTypes.Floor01:
                     return target;
                 default:
                     return target;
             }
         }
+
         private void RemoveAndRedrawStatus(Objects type)
         {
             var list = GameManager.Instance.ExploreObject.StatusObjectList;

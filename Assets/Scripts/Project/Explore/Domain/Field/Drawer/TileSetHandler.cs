@@ -1,3 +1,4 @@
+using DigitalWar.Project.Common.Enums;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,21 +11,23 @@ namespace DigitalWar.Project.Explore.Domain.Field.Drawer
         [SerializeField] private TileBase _wallTile03;
         [SerializeField] private TileBase _floorTile01;
 
-        public void SetTile(int cellValue, Vector3Int cellPos, Tilemap tilemap)
+        public void SetTile(TileTypes cellValue, Vector3Int cellPos, Tilemap tilemap)
         {
             switch (cellValue)
             {
-                case 1:
+                case TileTypes.Wall01:
                     tilemap.SetTile(cellPos, _wallTile01);
                     break;
-                case 2:
+                case TileTypes.Wall02:
                     tilemap.SetTile(cellPos, _wallTile02);
                     break;
-                case 3:
+                case TileTypes.Wall03:
                     tilemap.SetTile(cellPos, _wallTile03);
                     break;
-                case 0:
+                case TileTypes.Floor01:
                     tilemap.SetTile(cellPos, _floorTile01);
+                    break;
+                default:
                     break;
             }
         }

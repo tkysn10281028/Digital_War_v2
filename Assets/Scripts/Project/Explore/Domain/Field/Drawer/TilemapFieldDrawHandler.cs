@@ -1,4 +1,5 @@
 using System.IO;
+using DigitalWar.Project.Common.Enums;
 using DigitalWar.Project.Explore.Domain.Field.IF;
 using DigitalWar.Project.Explore.Domain.Player.Obstacle;
 using UnityEngine;
@@ -67,7 +68,7 @@ namespace DigitalWar.Project.Explore.Domain.Field.Drawer
             {
                 for (int x = 0; x < cols; x++)
                 {
-                    tileSetHandler.SetTile(mapData[y, x], new Vector3Int(x + xAdjust, -y + yAdjust, 0), _tilemap);
+                    tileSetHandler.SetTile((TileTypes)mapData[y, x], new Vector3Int(x + xAdjust, -y + yAdjust, 0), _tilemap);
                 }
             }
         }
