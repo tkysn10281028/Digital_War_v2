@@ -5,22 +5,22 @@ namespace DigitalWar.Project.Explore.Domain.Field
 {
     public class FieldDrawer : MonoBehaviour
     {
-        [SerializeField] private MonoBehaviour _drawFieldHandlerComponent;
-        private IFieldDrawHandler drawFieldHandler;
+        [SerializeField] private MonoBehaviour _fieldDrawHandlerComponent;
+        private IFieldDrawHandler fieldDrawHandler;
 
         void Awake()
         {
-            drawFieldHandler = _drawFieldHandlerComponent as IFieldDrawHandler;
+            fieldDrawHandler = _fieldDrawHandlerComponent as IFieldDrawHandler;
         }
 
         void Start()
         {
-            drawFieldHandler.Draw("map.csv");
+            fieldDrawHandler.Draw("map.csv");
         }
 
         public void RedrawField(string fileName)
         {
-            drawFieldHandler.Draw(fileName);
+            fieldDrawHandler.Draw(fileName);
         }
     }
 }

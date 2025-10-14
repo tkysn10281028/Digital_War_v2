@@ -47,7 +47,7 @@ namespace DigitalWar.Project.Common.Dialog
             textRect.offsetMax = Vector2.zero;
             TextArea.fontSize = 32;
             TextArea.color = Color.white;
-            TextArea.font = Resources.Load<TMP_FontAsset>("Fonts/ヒラギノ角ゴシック W3 SDF");
+            TextArea.font = Resources.Load<TMP_FontAsset>("Fonts/ヒラギノ角ゴシック W4 SDF");
 
             // Choice container
             ChoiceContainer = new GameObject("Choices");
@@ -82,6 +82,7 @@ namespace DigitalWar.Project.Common.Dialog
                 txt.fontSize = 28;
                 txt.color = (i == 0) ? Color.yellow : Color.white;
                 txt.alignment = TextAlignmentOptions.Center;
+                Debug.Log(TextArea.font);
                 txt.font = TextArea.font;
                 var rect = txt.GetComponent<RectTransform>();
                 rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);

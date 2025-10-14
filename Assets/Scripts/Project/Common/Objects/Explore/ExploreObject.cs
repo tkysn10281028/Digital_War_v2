@@ -8,7 +8,7 @@ namespace DigitalWar.Project.Common.Objects.Explore
 {
     public class ExploreObject
     {
-        public List<MapObject> MapObjectList;
-        public List<StatusObject> StatusObjectList;
+        public List<MapObject> MapObjectList = new();
+        public List<StatusObject> StatusObjectList = new();
     }
 }

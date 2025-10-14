@@ -5,7 +5,7 @@ namespace DigitalWar.Project.Common.Manager
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance;
-        public ExploreObject ExploreObject;
+        public ExploreObject ExploreObject = new();
         public bool IsPlayerLocked { get; private set; }
 
         void Awake()

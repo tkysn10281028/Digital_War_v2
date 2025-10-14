@@ -29,7 +29,7 @@ namespace DigitalWar.Project.Explore.Domain.Field.Drawer
 
         private void LoadFieldFromCSV(string fileName)
         {
-            string path = Path.Combine(Application.streamingAssetsPath, fileName);
+            string path = Path.Combine(Application.streamingAssetsPath, "Explore", fileName);
             if (!File.Exists(path))
             {
                 return;

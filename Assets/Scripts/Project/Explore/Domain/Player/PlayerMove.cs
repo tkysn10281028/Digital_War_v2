@@ -8,7 +8,7 @@ namespace DigitalWar.Project.Explore.Domain.Player
 {
     public class PlayerMove : MonoBehaviour
     {
-        [SerializeField] private float _moveSpeed = 30f;
+        [SerializeField] private float _moveSpeed = 5f;
         [SerializeField] private MonoBehaviour _inputHandlerComponent;
         [SerializeField] private MonoBehaviour _obstacleHandlerComponent;
         [SerializeField] private MonoBehaviour _playerRotatorComponent;
@@ -29,13 +29,23 @@ namespace DigitalWar.Project.Explore.Domain.Player
                 .Where(_ => !GameManager.Instance.IsPlayerLocked)
                 .Subscribe(_ =>
                 {
-                    var origin = transform.position; // 移動元
-
+                    var origin = transform.position;
                     Vector3 moveDirection = inputHandler.GetPlayerMoveVector();
-                    var target = origin + moveDirection * _moveSpeed * Time.deltaTime; // 移動先
 
-                    // プレイヤーの移動・回転
-                    transform.SetPositionAndRotation(obstacleHandler.JudgeIsObstacle(origin, target), playerRotator.Rotate(moveDirection));
+                    if (moveDirection == Vector3.zero)
+                        return;
+
+                    var target = origin + moveDirection * _moveSpeed * Time.deltaTime;
+                    var nextPosition = obstacleHandler.JudgeIsObstacle(origin, target);
+
+                    if (nextPosition != origin)
+                    {
+                        transform.SetPositionAndRotation(nextPosition, playerRotator.Rotate(moveDirection));
+                    }
+                    else
+                    {
+                        transform.position = origin;
+                    }
                 })
                 .AddTo(this);
         }
