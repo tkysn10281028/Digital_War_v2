@@ -5,6 +5,7 @@ using DigitalWar.Project.Common.Enums;
 using DigitalWar.Project.Common.Manager;
 using DigitalWar.Project.Explore.Domain.Map.ObjectDraw;
 using DigitalWar.Project.Explore.Domain.Status.ObjectDraw;
+using UniRx;
 using UnityEngine;
 
 namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
@@ -34,10 +35,28 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
         private void ShiftPlayerPositionIfPass(Vector3 move)
         {
             var playerObj = FindFirstObjectByType<PlayerMove>();
-            if (playerObj != null)
-            {
-                playerObj.transform.position += move;
-            }
+            if (playerObj == null) return;
+            GameManager.Instance.LockPlayer();
+            FadeController.Instance.FadeOut(0.5f)
+                .Delay(TimeSpan.FromSeconds(0.2))
+                .Do(_ =>
+                {
+                    playerObj.transform.position += move;
+                })
+                .SelectMany((_) => FadeController.Instance.FadeIn(0.5f))
+                .Subscribe(
+                    _ =>
+                    {
+                        GameManager.Instance.UnlockPlayer();
+                        Debug.Log("通過完了");
+                    },
+                    ex =>
+                    {
+                        GameManager.Instance.UnlockPlayer();
+                        Debug.LogError(ex);
+                    }
+                )
+                .AddTo(this);
         }
 
         private void ShowChoicesAndUpdateObjects(Action onPass, Action<Objects> onSelect)
