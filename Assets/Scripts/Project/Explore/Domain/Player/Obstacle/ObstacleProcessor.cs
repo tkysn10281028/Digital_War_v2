@@ -3,6 +3,7 @@ using System.Linq;
 using DigitalWar.Project.Common.Dialog;
 using DigitalWar.Project.Common.Enums;
 using DigitalWar.Project.Common.Manager;
+using DigitalWar.Project.Explore.Domain.Field;
 using DigitalWar.Project.Explore.Domain.Map.ObjectDraw;
 using DigitalWar.Project.Explore.Domain.Status.ObjectDraw;
 using UniRx;
@@ -12,36 +13,52 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
 {
     public class ObstacleProcessor : MonoBehaviour
     {
+        [SerializeField] private MonoBehaviour _fieldDrawerComponent;
+        [SerializeField] private MonoBehaviour _mapObjectDrawerComponent;
+        [SerializeField] private MonoBehaviour _statusObjectDrawerComponent;
+        [SerializeField] private Transform _player;
+        private FieldDrawer fieldDrawer;
+        private MapObjectDrawer mapObjectDrawer;
+        private StatusObjectDrawer statusObjectDrawer;
+
+        void Awake()
+        {
+            fieldDrawer = _fieldDrawerComponent as FieldDrawer;
+            mapObjectDrawer = _mapObjectDrawerComponent as MapObjectDrawer;
+            statusObjectDrawer = _statusObjectDrawerComponent as StatusObjectDrawer;
+        }
+
         public Vector3 ProcessAndReturnPosition(Vector3 origin, Vector3 target, TileTypes cellValue)
         {
             switch (cellValue)
             {
+                // 以下処理不要パターン
                 case TileTypes.Wall01:
-                    return origin;
-                case TileTypes.Wall02:
-                    ShowChoicesAndUpdateObjects(
-                        () => ShiftPlayerPositionIfPass(new Vector3(0, -9f)),
-                        (type) => SetObjectUpAndRedrawMap(type)
-                    );
-                    return origin;
                 case TileTypes.Wall03:
                     return origin;
                 case TileTypes.Floor01:
                     return target;
                 default:
                     return target;
+
+                // 以下処理が必要なパターン
+                case TileTypes.Wall02:
+                    ShowChoicesAndUpdateObjects(
+                        (type) => SetObjectUpAndRedrawMap(type),
+                        () => MoveToNextArea(new Vector3(0, -9f))
+                    );
+                    return origin;
             }
         }
-        private void ShiftPlayerPositionIfPass(Vector3 move)
+
+        private void MoveToNextArea(Vector3 move)
         {
-            var playerObj = FindFirstObjectByType<PlayerMove>();
-            if (playerObj == null) return;
             GameManager.Instance.LockPlayer();
             FadeController.Instance.FadeOut(0.5f)
                 .Delay(TimeSpan.FromSeconds(0.2))
                 .Do(_ =>
                 {
-                    playerObj.transform.position += move;
+                    MoveToNextAreaCore(move);
                 })
                 .SelectMany((_) => FadeController.Instance.FadeIn(0.5f))
                 .Subscribe(
@@ -59,7 +76,28 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                 .AddTo(this);
         }
 
-        private void ShowChoicesAndUpdateObjects(Action onPass, Action<Objects> onSelect)
+        private void MoveToNextAreaCore(Vector3 move)
+        {
+            // もらった移動量の分だけプレイヤーの位置を移動
+            _player.position += move;
+            var cur = -move.normalized;
+
+            // TODO: 現在地からマップ名を取得して再描画
+            fieldDrawer.RedrawField("map.csv");
+
+            // TODO: マップの再描画
+            var mapObjectList = GameManager.Instance.ExploreObject.MapObjectList;
+            var target = mapObjectList.FirstOrDefault(obj => obj.Type == Objects.Player);
+            if (target != null)
+            {
+                mapObjectList.Remove(target);
+            }
+            mapObjectList.Add(new MapObject((int)cur.x, (int)cur.y, GameManager.Instance.PlayerCurrentState.Color, Objects.Player, false));
+            mapObjectDrawer.DrawMapObject();
+            GameManager.Instance.PlayerCurrentState.SetPlayerPosition((int)cur.x, (int)cur.y);
+        }
+
+        private void ShowChoicesAndUpdateObjects(Action<Objects> onSelect = null, Action onPass = null)
         {
             DialogSystem.ShowWithChoicesAsync(
                 "行動を選択してください:",
@@ -68,8 +106,8 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                 {
                     if (index == 0)
                     {
-                        Debug.Log("通過");
-                        onPass.Invoke();
+                        onSelect?.Invoke(Objects.Player);
+                        onPass?.Invoke();
                         return;
                     }
                     var type = index switch
@@ -89,6 +127,10 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
 
         private void SetObjectUpAndRedrawMap(Objects type)
         {
+            if (GameManager.Instance.PlayerCurrentState.Y > 0 && type != Objects.Resist)
+            {
+                return;
+            }
             var newObj = new MapObject(0, 0, GameManager.Instance.PlayerCurrentState.Color, type, false);
             SetObjectAndRedrawMapCore(newObj);
 
@@ -148,11 +190,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             {
                 existing.Update(newObject);
             }
-            var drawer = FindFirstObjectByType<MapObjectDrawer>();
-            if (drawer != null)
-            {
-                drawer.DrawMapObject();
-            }
+            mapObjectDrawer.DrawMapObject();
         }
 
         private void RemoveAndRedrawStatus(Objects type)
@@ -163,11 +201,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             {
                 list.Remove(target);
             }
-            var drawer = FindFirstObjectByType<StatusObjectDrawer>();
-            if (drawer != null)
-            {
-                drawer.DrawStatusObject();
-            }
+            statusObjectDrawer.DrawStatusObject();
         }
     }
 }

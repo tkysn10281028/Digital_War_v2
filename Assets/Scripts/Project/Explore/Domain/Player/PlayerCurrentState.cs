@@ -1,4 +1,5 @@
 using DigitalWar.Project.Common.Enums;
+using DigitalWar.Project.Common.Manager;
 
 namespace DigitalWar.Project.Explore.Domain.Player
 {
@@ -21,8 +22,8 @@ namespace DigitalWar.Project.Explore.Domain.Player
 
         public void SetPlayerPosition(int x, int y)
         {
-            X = x;
-            Y = y;
+            X = GameManager.Instance.PlayerCurrentState.X + x;
+            Y = GameManager.Instance.PlayerCurrentState.Y + y;
         }
     }
 }

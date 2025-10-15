@@ -586,6 +586,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca030664167564246b195a404bc9c9db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fieldDrawerComponent: {fileID: 1427638565}
+  _mapObjectDrawerComponent: {fileID: 533306621}
+  _statusObjectDrawerComponent: {fileID: 2017139865}
+  _player: {fileID: 1443226785}
 --- !u!1 &662807930
 GameObject:
   m_ObjectHideFlags: 0
