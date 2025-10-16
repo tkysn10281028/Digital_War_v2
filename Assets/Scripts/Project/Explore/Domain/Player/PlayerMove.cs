@@ -22,7 +22,7 @@ namespace DigitalWar.Project.Explore.Domain.Player
             inputHandler = _inputHandlerComponent as IPlayerMoveInputHandler;
             obstacleHandler = _obstacleHandlerComponent as IPlayerObstacleHandler;
             playerRotator = _playerRotatorComponent as PlayerRotator;
-            GameManager.Instance.PlayerCurrentState = new PlayerCurrentState(-1, -1, PlayerColors.Yellow);
+            GameManager.Instance.PlayerCurrentState = new PlayerCurrentState(-1, 0, PlayerColors.Yellow);
         }
 
         void Start()
