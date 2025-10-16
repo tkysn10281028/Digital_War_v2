@@ -78,19 +78,19 @@ namespace DigitalWar.Project.Common.Dialog
                 .AddTo(disposables);
         }
 
-        public static void ShowWithChoicesAsync(Action onCompleted, string message, string[] choices, Action<int> onSelected)
+        public static void ShowWithChoicesAsync(Action onCompleted, string message, string[] choices, Action<int> onSelected, bool autoUnlock = true)
         {
             GameManager.Instance.LockPlayer();
-            instance.ShowChoiceAsync(message, choices, onSelected, onCompleted);
+            instance.ShowChoiceAsync(message, choices, onSelected, onCompleted, autoUnlock);
         }
 
-        public static void ShowWithChoicesAsync(string message, string[] choices, Action<int> onSelected)
+        public static void ShowWithChoicesAsync(string message, string[] choices, Action<int> onSelected, bool autoUnlock = true)
         {
             GameManager.Instance.LockPlayer();
-            instance.ShowChoiceAsync(message, choices, onSelected, null);
+            instance.ShowChoiceAsync(message, choices, onSelected, null, autoUnlock);
         }
 
-        private void ShowChoiceAsync(string message, string[] choices, Action<int> onSelected, Action onCompleted)
+        private void ShowChoiceAsync(string message, string[] choices, Action<int> onSelected, Action onCompleted, bool autoUnlock)
         {
             if (isShowing)
                 return;
@@ -147,7 +147,12 @@ namespace DigitalWar.Project.Common.Dialog
 
                         int selected = currentChoiceIndex;
                         onSelected?.Invoke(selected);
-                        EndDialog();
+                        EndDialog(autoUnlock);
+                        onCompleted?.Invoke();
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Z))
+                    {
+                        EndDialog(true);
                         onCompleted?.Invoke();
                     }
                 })
@@ -161,13 +166,14 @@ namespace DigitalWar.Project.Common.Dialog
             view.ChoiceTexts[currentChoiceIndex].color = Color.yellow;
         }
 
-        private void EndDialog()
+        private void EndDialog(bool autoUnlock)
         {
             view.Panel.SetActive(false);
             view.ChoiceContainer.SetActive(false);
-            GameManager.Instance.UnlockPlayer();
             isShowing = false;
             CleanupSubscriptions();
+            if (autoUnlock)
+                GameManager.Instance.UnlockPlayer();
         }
 
         private void TypeTextObservable(string message)

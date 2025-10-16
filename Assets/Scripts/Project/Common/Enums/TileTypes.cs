@@ -31,5 +31,9 @@ namespace DigitalWar.Project.Common.Enums
         Lava03 = 1030003,
         Lava04 = 1030004,
         Lava05 = 1030005,
+
+        // ItemBox系：104XXXX
+        // 障害物で、当たったらイベント（選択肢）
+        ItemBox01 = 1040001
     }
 }

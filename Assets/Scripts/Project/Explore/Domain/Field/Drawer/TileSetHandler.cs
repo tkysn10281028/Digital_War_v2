@@ -10,6 +10,7 @@ namespace DigitalWar.Project.Explore.Domain.Field.Drawer
         [SerializeField] private TileBase _wallTile02;
         [SerializeField] private TileBase _wallTile03;
         [SerializeField] private TileBase _floorTile01;
+        [SerializeField] private TileBase _itemBox01;
 
         public void SetTile(TileTypes cellValue, Vector3Int cellPos, Tilemap tilemap)
         {
@@ -26,6 +27,9 @@ namespace DigitalWar.Project.Explore.Domain.Field.Drawer
                     break;
                 case TileTypes.Floor01:
                     tilemap.SetTile(cellPos, _floorTile01);
+                    break;
+                case TileTypes.ItemBox01:
+                    tilemap.SetTile(cellPos, _itemBox01);
                     break;
                 default:
                     break;

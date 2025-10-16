@@ -859,6 +859,7 @@ MonoBehaviour:
   _wallTile02: {fileID: 11400000, guid: b1808339fd1f74a69aba4e1da36f71c9, type: 2}
   _wallTile03: {fileID: 11400000, guid: ef56c2516bcc74b98930f6196e448c6d, type: 2}
   _floorTile01: {fileID: 11400000, guid: 35adefb8acdcb44bd98a6c10cba45ce6, type: 2}
+  _itemBox01: {fileID: 11400000, guid: c146014a7ba3949018bf8609518bf5d4, type: 2}
 --- !u!1 &1221041504
 GameObject:
   m_ObjectHideFlags: 0

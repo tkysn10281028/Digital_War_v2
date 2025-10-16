@@ -32,21 +32,25 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
         {
             switch (cellValue)
             {
-                // 以下処理不要パターン
+                // 以下処理不要パターン(障害物)
                 case TileTypes.Wall01:
                 case TileTypes.Wall03:
                     return origin;
+
+                // 以下処理不要パターン(Not障害物)
                 case TileTypes.Floor01:
-                    return target;
                 default:
                     return target;
 
                 // 以下処理が必要なパターン
                 case TileTypes.Wall02:
-                    ShowChoicesAndUpdateObjects(
+                    ShowChoicesAndUpdateObjectsForWall(
                         (type) => SetObjectUpAndRedrawMap(type),
                         () => MoveToNextArea(new Vector3(0, -9f))
                     );
+                    return origin;
+                case TileTypes.ItemBox01:
+                    ShowChoicesAndUpdateObjectsForItemBox();
                     return origin;
             }
         }
@@ -97,15 +101,16 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             GameManager.Instance.PlayerCurrentState.SetPlayerPosition((int)cur.x, (int)cur.y);
         }
 
-        private void ShowChoicesAndUpdateObjects(Action<Objects> onSelect = null, Action onPass = null)
+        private void ShowChoicesAndUpdateObjectsForWall(Action<Objects> onSelect = null, Action onPass = null)
         {
             DialogSystem.ShowWithChoicesAsync(
-                "行動を選択してください:",
-                new[] { "通過", "鍵", "ウイルス", "抗体" },
+                "行動を選択してください(Zで閉じる) :",
+                new[] { "通過", "鍵", "ウイルス" },
                 index =>
                 {
                     if (index == 0)
                     {
+                        GameManager.Instance.LockPlayer();
                         onSelect?.Invoke(Objects.Player);
                         onPass?.Invoke();
                         return;
@@ -114,17 +119,49 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                     {
                         1 => Objects.Lock,
                         2 => Objects.Virus,
-                        3 => Objects.Resist,
                         _ => Objects.None
                     };
 
                     if (type == Objects.None) return;
                     onSelect.Invoke(type);
                     RemoveAndRedrawStatus(type);
-                }
+                }, false
             );
         }
 
+        private void ShowChoicesAndUpdateObjectsForItemBox()
+        {
+            DialogSystem.ShowWithChoicesAsync(
+                "行動を選択してください(Zで閉じる) :",
+                new[] { "所有権", "抗体" },
+                index =>
+                {
+                    var type = index switch
+                    {
+                        0 => Objects.Ownership,
+                        1 => Objects.Resist,
+                        _ => Objects.None
+                    };
+
+                    SetObjectAndRedrawMap(type);
+
+                    if (type == Objects.None || type == Objects.Ownership) return;
+                    RemoveAndRedrawStatus(type);
+                }
+            );
+        }
+        private void SetObjectAndRedrawMap(Objects type)
+        {
+            var newObj = new MapObject(0, 0, GameManager.Instance.PlayerCurrentState.Color, type, false);
+            SetObjectAndRedrawMapCore(newObj);
+
+            // 再描画
+            var drawer = FindFirstObjectByType<MapObjectDrawer>();
+            if (drawer != null)
+            {
+                drawer.DrawMapObject();
+            }
+        }
         private void SetObjectUpAndRedrawMap(Objects type)
         {
             if (GameManager.Instance.PlayerCurrentState.Y > 0 && type != Objects.Resist)
@@ -172,7 +209,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
         private void SetObjectAndRedrawMapCore(MapObject newObject)
         {
             var statusObjectList = GameManager.Instance.ExploreObject.StatusObjectList;
-            if (!statusObjectList.Any(obj => obj.Type == newObject.Type))
+            if (newObject.Type != Objects.Ownership && !statusObjectList.Any(obj => obj.Type == newObject.Type))
                 return;
 
             var mapObjectList = GameManager.Instance.ExploreObject.MapObjectList;
@@ -182,7 +219,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                 obj.Color == newObject.Color &&
                 obj.IsXDirection == newObject.IsXDirection
             );
-            if (existing == null || newObject.Type == Objects.Resist)
+            if (existing == null || newObject.Type == Objects.Resist || newObject.Type == Objects.Ownership)
             {
                 mapObjectList.Add(newObject);
             }
@@ -190,6 +227,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             {
                 existing.Update(newObject);
             }
+            mapObjectList.ForEach((m) => Debug.Log(m));
             mapObjectDrawer.DrawMapObject();
         }
 
@@ -202,6 +240,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                 list.Remove(target);
             }
             statusObjectDrawer.DrawStatusObject();
+            GameManager.Instance.UnlockPlayer();
         }
     }
 }
