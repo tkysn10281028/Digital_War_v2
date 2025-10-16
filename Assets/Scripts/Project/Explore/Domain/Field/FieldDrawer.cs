@@ -1,3 +1,4 @@
+using DigitalWar.Project.Common.MapName;
 using DigitalWar.Project.Explore.Domain.Field.IF;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace DigitalWar.Project.Explore.Domain.Field
 
         void Start()
         {
-            fieldDrawHandler.Draw("map.csv");
+            fieldDrawHandler.Draw(MapNameResolver.Resolve());
         }
 
         public void RedrawField(string fileName)

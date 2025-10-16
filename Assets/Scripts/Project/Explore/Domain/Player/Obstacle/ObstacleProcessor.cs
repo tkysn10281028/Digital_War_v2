@@ -3,6 +3,7 @@ using System.Linq;
 using DigitalWar.Project.Common.Dialog;
 using DigitalWar.Project.Common.Enums;
 using DigitalWar.Project.Common.Manager;
+using DigitalWar.Project.Common.MapName;
 using DigitalWar.Project.Explore.Domain.Field;
 using DigitalWar.Project.Explore.Domain.Map.ObjectDraw;
 using DigitalWar.Project.Explore.Domain.Status.ObjectDraw;
@@ -87,7 +88,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             var cur = -move.normalized;
 
             // TODO: 現在地からマップ名を取得して再描画
-            fieldDrawer.RedrawField("map.csv");
+            fieldDrawer.RedrawField(MapNameResolver.Resolve());
 
             // TODO: マップの再描画
             var mapObjectList = GameManager.Instance.ExploreObject.MapObjectList;
