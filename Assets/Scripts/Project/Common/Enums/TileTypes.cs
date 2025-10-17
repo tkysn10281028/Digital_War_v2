@@ -23,6 +23,8 @@ namespace DigitalWar.Project.Common.Enums
         Stair02 = 1020002,
         Stair03 = 1020003,
         Stair04 = 1020004,
+        Stair05 = 1020005,
+        Stair06 = 1020006,
 
         // Lava系：103XXXX
         // 障害物. 基本通れない.
@@ -34,6 +36,11 @@ namespace DigitalWar.Project.Common.Enums
 
         // ItemBox系：104XXXX
         // 障害物で、当たったらイベント（選択肢）
-        ItemBox01 = 1040001
+        ItemBox01 = 1040001,
+
+        // Door系：105XXXX
+        // 上から入る 踏んだらイベント
+        Door01 = 1050001,
+        Door02 = 1050002,
     }
 }

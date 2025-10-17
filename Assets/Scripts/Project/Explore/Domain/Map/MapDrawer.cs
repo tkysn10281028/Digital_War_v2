@@ -23,16 +23,6 @@ namespace DigitalWar.Project.Explore.Domain.Map
         void Start()
         {
             DrawMap();
-            // TODO: ここでJson文字列をサーバーから受け取るイメージ
-            var data = new List<MapObject>
-            {
-                new(0, 0, PlayerColors.Yellow, Objects.Player, true),
-                new(1, 1, PlayerColors.Yellow, Objects.Resist, true),
-                new(0, 0, PlayerColors.Yellow, Objects.Lock, true),
-                new(1, 0, PlayerColors.Yellow, Objects.Ownership, true),
-                new(0, 0, PlayerColors.Yellow, Objects.Virus, false),
-            };
-            GameManager.Instance.ExploreObject.MapObjectList = data;
             mapObjectDrawer.DrawMapObject();
         }
 

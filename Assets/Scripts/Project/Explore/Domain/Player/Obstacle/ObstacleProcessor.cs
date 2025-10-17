@@ -35,6 +35,7 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             {
                 // 以下処理不要パターン(障害物)
                 case TileTypes.Wall01:
+                case TileTypes.Wall02:
                 case TileTypes.Wall03:
                     return origin;
 
@@ -44,12 +45,39 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                     return target;
 
                 // 以下処理が必要なパターン
-                case TileTypes.Wall02:
+                // 上に行く
+                case TileTypes.Door01:
                     ShowChoicesAndUpdateObjectsForWall(
                         (type) => SetObjectUpAndRedrawMap(type),
-                        () => MoveToNextArea(new Vector3(0, -9f))
+                        () => MoveToNextArea(new Vector3(0, -8f))
                     );
                     return origin;
+
+                // 下に行く
+                case TileTypes.Stair01:
+                    ShowChoicesAndUpdateObjectsForWall(
+                        (type) => SetObjectDownAndRedrawMap(type),
+                        () => MoveToNextArea(new Vector3(0, 8f))
+                    );
+                    return origin;
+
+                // 左に行く
+                case TileTypes.Stair05:
+                    ShowChoicesAndUpdateObjectsForWall(
+                        (type) => SetObjectLeftAndRedrawMap(type),
+                        () => MoveToNextArea(new Vector3(15f, 0))
+                    );
+                    return origin;
+
+                // 右に行く
+                case TileTypes.Stair06:
+                    ShowChoicesAndUpdateObjectsForWall(
+                        (type) => SetObjectRightAndRedrawMap(type),
+                        () => MoveToNextArea(new Vector3(-15f, 0))
+                    );
+                    return origin;
+
+                // アイテムボックス
                 case TileTypes.ItemBox01:
                     ShowChoicesAndUpdateObjectsForItemBox();
                     return origin;
@@ -70,7 +98,6 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
                     _ =>
                     {
                         GameManager.Instance.UnlockPlayer();
-                        Debug.Log("通過完了");
                     },
                     ex =>
                     {
@@ -87,9 +114,6 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             _player.position += move;
             var cur = -move.normalized;
 
-            // TODO: 現在地からマップ名を取得して再描画
-            fieldDrawer.RedrawField(MapNameResolver.Resolve());
-
             // TODO: マップの再描画
             var mapObjectList = GameManager.Instance.ExploreObject.MapObjectList;
             var target = mapObjectList.FirstOrDefault(obj => obj.Type == Objects.Player);
@@ -100,6 +124,10 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
             mapObjectList.Add(new MapObject((int)cur.x, (int)cur.y, GameManager.Instance.PlayerCurrentState.Color, Objects.Player, false));
             mapObjectDrawer.DrawMapObject();
             GameManager.Instance.PlayerCurrentState.SetPlayerPosition((int)cur.x, (int)cur.y);
+
+            // TODO: 現在地からマップ名を取得して再描画
+            fieldDrawer.RedrawField(MapNameResolver.Resolve());
+
         }
 
         private void ShowChoicesAndUpdateObjectsForWall(Action<Objects> onSelect = null, Action onPass = null)
@@ -182,29 +210,53 @@ namespace DigitalWar.Project.Explore.Domain.Player.Obstacle
 
         private void SetObjectDownAndRedrawMap(Objects type)
         {
-            var x = GameManager.Instance.PlayerCurrentState.X;
-            var y = GameManager.Instance.PlayerCurrentState.Y;
-            var playerColor = GameManager.Instance.PlayerCurrentState.Color;
-            var newObj = new MapObject(x, y - 1, playerColor, type, false);
+            if (GameManager.Instance.PlayerCurrentState.Y < 0 && type != Objects.Resist)
+            {
+                return;
+            }
+            var newObj = new MapObject(0, -1, GameManager.Instance.PlayerCurrentState.Color, type, false);
             SetObjectAndRedrawMapCore(newObj);
+
+            // 再描画
+            var drawer = FindFirstObjectByType<MapObjectDrawer>();
+            if (drawer != null)
+            {
+                drawer.DrawMapObject();
+            }
         }
 
         private void SetObjectRightAndRedrawMap(Objects type)
         {
-            var x = GameManager.Instance.PlayerCurrentState.X;
-            var y = GameManager.Instance.PlayerCurrentState.Y;
-            var playerColor = GameManager.Instance.PlayerCurrentState.Color;
-            var newObj = new MapObject(x, y, playerColor, type, true);
+            if (GameManager.Instance.PlayerCurrentState.X > 0 && type != Objects.Resist)
+            {
+                return;
+            }
+            var newObj = new MapObject(0, 0, GameManager.Instance.PlayerCurrentState.Color, type, true);
             SetObjectAndRedrawMapCore(newObj);
+
+            // 再描画
+            var drawer = FindFirstObjectByType<MapObjectDrawer>();
+            if (drawer != null)
+            {
+                drawer.DrawMapObject();
+            }
         }
 
         private void SetObjectLeftAndRedrawMap(Objects type)
         {
-            var x = GameManager.Instance.PlayerCurrentState.X;
-            var y = GameManager.Instance.PlayerCurrentState.Y;
-            var playerColor = GameManager.Instance.PlayerCurrentState.Color;
-            var newObj = new MapObject(x - 1, y, playerColor, type, true);
+            if (GameManager.Instance.PlayerCurrentState.X < 0 && type != Objects.Resist)
+            {
+                return;
+            }
+            var newObj = new MapObject(-1, 0, GameManager.Instance.PlayerCurrentState.Color, type, true);
             SetObjectAndRedrawMapCore(newObj);
+
+            // 再描画
+            var drawer = FindFirstObjectByType<MapObjectDrawer>();
+            if (drawer != null)
+            {
+                drawer.DrawMapObject();
+            }
         }
 
         private void SetObjectAndRedrawMapCore(MapObject newObject)

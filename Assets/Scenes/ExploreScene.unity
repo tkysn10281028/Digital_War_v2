@@ -859,6 +859,10 @@ MonoBehaviour:
   _wallTile02: {fileID: 11400000, guid: b1808339fd1f74a69aba4e1da36f71c9, type: 2}
   _wallTile03: {fileID: 11400000, guid: ef56c2516bcc74b98930f6196e448c6d, type: 2}
   _floorTile01: {fileID: 11400000, guid: 35adefb8acdcb44bd98a6c10cba45ce6, type: 2}
+  _doorTile01: {fileID: 11400000, guid: ce30a04383b3c4b7abd10ba138db1d38, type: 2}
+  _stairTileDown: {fileID: 11400000, guid: 01d815f9424d540a38df02fe84741751, type: 2}
+  _stairTileLeft01: {fileID: 11400000, guid: a4b3fdcca9d574995bf7ba6bc1d45852, type: 2}
+  _stairTileRight01: {fileID: 11400000, guid: a7f87bbf0d35c496a8b511c319dae886, type: 2}
   _itemBox01: {fileID: 11400000, guid: c146014a7ba3949018bf8609518bf5d4, type: 2}
 --- !u!1 &1221041504
 GameObject:

@@ -11,7 +11,7 @@ namespace DigitalWar.Project.Common.Dialog
         private static DialogSystem instance;
         private DialogView view;
 
-        private readonly float charInterval = 0.05f;
+        private readonly float charInterval = 0.02f;
         private readonly float messageInterval = 0f;
         private bool isShowing = false;
         private int currentChoiceIndex = 0;
