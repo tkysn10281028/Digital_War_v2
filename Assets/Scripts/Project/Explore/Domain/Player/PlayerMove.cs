@@ -20,9 +20,13 @@ namespace DigitalWar.Project.Explore.Domain.Player
 
         void Awake()
         {
+            // Playerに紐づいている各インスタンスの紐付け
             inputHandler = _inputHandlerComponent as IPlayerMoveInputHandler;
             obstacleHandler = _obstacleHandlerComponent as IPlayerObstacleHandler;
             playerRotator = _playerRotatorComponent as PlayerRotator;
+
+            // プレイヤーの現在地関連の情報を設定
+            // TODO: ここかエントランスでサーバーから現在地を受け取って設定する
             GameManager.Instance.PlayerCurrentState = new PlayerCurrentState(0, 0, PlayerColors.Yellow);
             GameManager.Instance.ExploreObject.SetPlayerCurPosOnMap();
         }
